@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import random
 import matplotlib.patches as mpatches
+from sklearn import linear_model
+from sklearn.linear_model import LinearRegression
 #Solving Ax = b with QR factorization
 #First data set
 n = 30
@@ -25,7 +27,10 @@ def y2(x):
 
 #Finding R and c for equation R_1x = c
 #Initiating for first data set
-A = np.c_[np.ones((n, 1)), x, x**2]
+
+
+#A must be changed for different m
+A = np.c_[np.ones((n, 1)), x, x**2, x**3, x**4, x**5, x**6, x**7, x**8]
 Q, R = np.linalg.qr(A)
 b = y(x)
 c = Q.T.dot(b)
@@ -36,7 +41,7 @@ b2 = y2(x)
 c2 = Q.T.dot(b2)
 comparex2 = np.linalg.inv(A.T.dot(A)).dot(A.T).dot(b2)
 
-m = 3
+m = 8
 #SOLVING Ax = b FOR UPPER TRIANGULAR MATRIX A, BACKWARD SUBSTITUTION
 def BackSubstitution(A, b):
     n = len(b)    
@@ -55,7 +60,6 @@ xSoldata1 = BackSubstitution(R,c)
 xSoldata2 = BackSubstitution(R,c2)
 
 def poly(coeffs, x, n, m):
-    print(m)
     fit = np.zeros(n)
     for i in range(n):
         for j in range(m):
@@ -66,11 +70,17 @@ fitfunc1 = poly(xSoldata1, x, n, m)
 fitfunc2 = poly(xSoldata2, x, n, m)
 
 #Plotting
+plt.title(r'$Polynomial$ $fit$ $of$ $first$ $data$ $set$ $y(x)$', fontsize = 18)
+plt.xlabel(r'$x$', fontsize = 16)
+plt.ylabel(r'$y(x)$', fontsize = 16)
 plt.plot(x, fitfunc1, label='Polyfit of degree %d' %(m-1))
 plt.plot(x, y(x), 'o', label='Dataset 1')
 plt.legend()
 plt.show()
 
+plt.title(r'$Polynomial$ $fit$ $of$ $second$ $data$ $set$ $y(x)$', fontsize = 18)
+plt.xlabel(r'$x$', fontsize = 16)
+plt.ylabel(r'$y(x)$', fontsize = 16)
 plt.plot(x, fitfunc2, label= 'Polyfit of degree %d' %(m-1))
 plt.plot(x, y2(x), 'o', label = 'Dataset 2')
 plt.legend()
